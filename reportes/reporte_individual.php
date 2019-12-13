@@ -66,7 +66,7 @@ $mpdf->WriteHTML('<style> table { min-height: 500px; } </style><div class="conta
 <span>Curso:' . $resultado_estudiante["curso"] . '</span><br>
 <span>Establecimiento:' . $resultado_estudiante["establecimiento"] . '</span><br>
 <span>Fecha: ' .$fecha. '</span><br>
-<span>Duracion encuesta: '.$duracion.'</span>
+<!-- <span>Duracion encuesta: '.$duracion.'</span> -->
 </div>
 <div class="descrip_com_esco">
 <div class="subtitulos pt-1">Definiciones</div>

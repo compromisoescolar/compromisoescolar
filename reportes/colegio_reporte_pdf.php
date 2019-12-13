@@ -592,15 +592,15 @@ if ($totalParticipantesBasica != 0 && $totalParticipantesMedia == 0) {
     <thead>
     <tr style="background-color:#fc455c;border: 1px solid #fc455c;">
     <th style="color:white;">Nombre</th>
-    <th style="color:white;">FC</th>
-    <th style="color:white;">CE</th>
+    <th align="center" style="color:white;">FC</th>
+    <th align="center" style="color:white;">CE</th>
     </tr>
     </thead>
     <tbody>';
 
     for ($i = 0; $i < count($cursos_basica); $i++) { 
         // FC= x  CE= y
-        $dat_cur_bas = $dat_cur_bas."<tr><td>".$cursos_basica[$i]['name']. "</td> <td>".$cursos_basica[$i]['x']."</td> <td>".$cursos_basica[$i]['y']."</td></tr>";
+        $dat_cur_bas = $dat_cur_bas."<tr><td>".$cursos_basica[$i]['name']. "</td> <td align='center'>".$cursos_basica[$i]['x']."</td> <td align='center'>".$cursos_basica[$i]['y']."</td></tr>";
     }
     $dat_cur_bas = $dat_cur_bas."</tbody></table></center>";
 
@@ -619,15 +619,15 @@ if ($totalParticipantesBasica != 0 && $totalParticipantesMedia == 0) {
     <thead>
     <tr style="background-color:#fc455c;border: 1px solid #fc455c;">
     <th style="color:white;">Nombre</th>
-    <th style="color:white;">FC</th>
-    <th style="color:white;">CE</th>
+    <th align="center" style="color:white;">FC</th>
+    <th align="center" style="color:white;">CE</th>
     </tr>
     </thead>
     <tbody>';
 
     for ($i = 0; $i < count($cursos_media); $i++) { 
         // FC= x  CE= y
-        $dat_cur_med = $dat_cur_med."<tr><td>".$cursos_media[$i]['name']. "</td> <td>".$cursos_media[$i]['x']."</td> <td>".$cursos_media[$i]['y']."</td></tr>";
+        $dat_cur_med = $dat_cur_med."<tr><td>".$cursos_media[$i]['name']. "</td> <td align='center'>".$cursos_media[$i]['x']."</td> <td align='center'>".$cursos_media[$i]['y']."</td></tr>";
     }
     $dat_cur_med = $dat_cur_med."</tbody></table></center>";
 
@@ -644,15 +644,15 @@ if ($totalParticipantesBasica != 0 && $totalParticipantesMedia == 0) {
     <thead>
     <tr style="background-color:#fc455c;border: 1px solid #fc455c;">
     <th style="color:white;">Nombre</th>
-    <th style="color:white;">FC</th>
-    <th style="color:white;">CE</th>
+    <th align="center" style="color:white;">FC</th>
+    <th align="center" style="color:white;">CE</th>
     </tr>
     </thead>
     <tbody>';
 
     for ($i = 0; $i < count($cursos_basica); $i++) { 
         // FC= x  CE= y
-        $dat_cur_bas = $dat_cur_bas."<tr><td>".$cursos_basica[$i]['name']. "</td> <td>".$cursos_basica[$i]['x']."</td> <td>".$cursos_basica[$i]['y']."</td></tr>";
+        $dat_cur_bas = $dat_cur_bas."<tr><td>".$cursos_basica[$i]['name']. "</td> <td align='center'>".$cursos_basica[$i]['x']."</td> <td align='center'>".$cursos_basica[$i]['y']."</td></tr>";
     }
     $dat_cur_bas = $dat_cur_bas."</tbody></table></center>";
 
@@ -670,15 +670,15 @@ if ($totalParticipantesBasica != 0 && $totalParticipantesMedia == 0) {
     <thead>
     <tr style="background-color:#fc455c;border: 1px solid #fc455c;">
     <th style="color:white;">Nombre</th>
-    <th style="color:white;">FC</th>
-    <th style="color:white;">CE</th>
+    <th align="center" style="color:white;">FC</th>
+    <th align="center" style="color:white;">CE</th>
     </tr>
     </thead>
     <tbody>';
 
     for ($i = 0; $i < count($cursos_media); $i++) { 
         // FC= x  CE= y
-        $dat_cur_med = $dat_cur_med."<tr><td>".$cursos_media[$i]['name']. "</td> <td>".$cursos_media[$i]['x']."</td> <td>".$cursos_media[$i]['y']."</td></tr>";
+        $dat_cur_med = $dat_cur_med."<tr><td>".$cursos_media[$i]['name']. "</td> <td align='center'>".$cursos_media[$i]['x']."</td> <td align='center'>".$cursos_media[$i]['y']."</td></tr>";
     }
     $dat_cur_med = $dat_cur_med."</tbody></table></center>";
 

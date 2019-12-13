@@ -32,8 +32,8 @@ if( $_GET["tipo"] == "im"){
         $mail->isSMTP();                                    
         $mail->Host = 'smtp.gmail.com';  
         $mail->SMTPAuth = true;                              
-        $mail->Username = 'dheresmann@gmail.com';              
-        $mail->Password = '1pesistaheresmann1';                       
+        $mail->Username = 'infocompromisoescolar@gmail.com';              
+        $mail->Password = 'compromisoescolar2019';                       
         $mail->SMTPSecure = 'tls';                            
         $mail->Port = 587;                                  
     

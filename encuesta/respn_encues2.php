@@ -1109,26 +1109,22 @@ history.pushState(null, null, location.href);
 										
 		</script>
 
-		<footer id="footer" class="page-footer font-small mdb-color lighten-3 pt-4" style="margin-bottom: 0px; padding-bottom: 0px; bottom: 0; height: 200px;">
-            <div class="container" style="margin-bottom: 20px;">
-               <table id="tab_foot" width="100%" border="0">
+    <footer class="page-footer pt-4" style="margin-bottom: 0px; padding-bottom: 0px; bottom: 0; height: 200px;">
+        <div class="container" style="margin-bottom: 20px;">
+            <table cellpadding="10">
                     <tr>
-                        <td align="left" width="33%">
-                            <div style="float: center; display: flex;">
+                        <td align="left" valign="center">
+                            <div style="display: flex; align-items: baseline;">
                                 <img style="margin-right: 5px;" width="44" src="../assets/img/mineduc.png">
                                 <img style="margin-right: 5px;" width="120" src="../assets/img/fondef.png">
                                 <img style="margin-right: 5px;" width="100" src="../assets/img/corfo.png">
-                            </div>
-                        </td>
-                        <td align="center" width="33%">
-                            <div>
                                 <img style="margin-right: 5px;" width="30" src="../assets/img/ufro.png">
                                 <img style="margin-right: 5px;" width="90" src="../assets/img/autonoma.png">
                                 <img style="margin-right: 5px;" width="150" src="../assets/img/fund_telefonica.png">
                             </div>
                         </td>
-                        <td align="right" width="33%">
-                            <p style="font-size: small; text-align: justify; font: condensed 80% sans-serif; color: #212529;"> 
+                        <td width="33%" align="center" valign="center" >
+                            <p style="font-size: small; text-align: justify; font: condensed 80% sans-serif; color: #212529;">
                                 Estas encuestas forman parte del Proyecto FONDEF ID14I10078-ID14I20078 Medición del compromiso del niño, niña y adolescente con sus estudios para la promoción de trayectorias educativas exitosas.
                             </p>
                         </td>
@@ -1141,6 +1137,13 @@ history.pushState(null, null, location.href);
 			.progress-bar {
   background: #40c2d4;
 }
+            .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+                font-weight: 900;
+            }
+
+            body {
+                color: #212529;
+            }
 		</style>
 </body>
 </html>

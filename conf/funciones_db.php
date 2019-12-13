@@ -2746,8 +2746,44 @@ function respuesta_no_respuesta($id_establecimiento, $id_docente)
     }
 }
 
-function respuesta_no_respuesta_establecimiento($id_establecimiento)
-{
+
+function RespondidasEstDocente($id_establecimiento, $id_docente) {
+    try {
+        $con = connectDB_demos();
+        $query = $con->query(" SELECT COUNT(id_ce_participantes) AS respondidas
+        FROM ce_participantes
+        WHERE ce_establecimiento_id_ce_establecimiento = '$id_establecimiento' AND
+        ce_docente_id_ce_docente = '$id_docente' AND
+        ce_estado_encuesta = 1 
+        ");
+
+        return $query;
+
+    } catch (Exception $e) {
+
+        echo 'Excepción Capturada: ' . $e->getMessage();
+    }
+}
+
+function NoRespondidasEstDocente($id_establecimiento, $id_docente) {
+    try {
+        $con = connectDB_demos();
+        $query = $con->query(" SELECT COUNT(id_ce_participantes) AS no_respondidas
+        FROM ce_participantes
+        WHERE ce_establecimiento_id_ce_establecimiento = '$id_establecimiento' AND
+        ce_docente_id_ce_docente = '$id_docente' AND
+        ce_estado_encuesta = 0 
+        ");
+
+        return $query;
+
+    } catch (Exception $e) {
+
+        echo 'Excepción Capturada: ' . $e->getMessage();
+    }
+}
+
+function respuesta_no_respuesta_establecimiento($id_establecimiento) {
     try {
         $con = connectDB_demos();
         $query = $con->prepare(" SELECT COUNT(id_ce_participantes) AS respondidas
@@ -2762,18 +2798,63 @@ function respuesta_no_respuesta_establecimiento($id_establecimiento)
        
          ce_estado_encuesta = 0");
 
-         $query->execute([]);
-
-        
+        $query->execute([]);
 
         return $query;
-
     } catch (Exception $e) {
-
         echo 'Excepción Capturada: ' . $e->getMessage();
     }
 }
 
+function RespondidasEstablecimiento($id_establecimiento) {
+    try {
+        $con = connectDB_demos();
+        $query = $con->prepare(" SELECT COUNT(id_ce_participantes) AS respondidas
+        FROM ce_participantes
+        WHERE ce_establecimiento_id_ce_establecimiento = '$id_establecimiento' AND     
+        ce_estado_encuesta = 1 
+        ");
+
+        $query->execute([]);
+
+        return $query;
+    } catch (Exception $e) {
+        echo 'Excepción Capturada: ' . $e->getMessage();
+    }
+}
+
+function NoRespondidasEstablecimiento($id_establecimiento) {
+    try {
+        $con = connectDB_demos();
+        $query = $con->prepare(" SELECT COUNT(id_ce_participantes) AS no_respondidas
+        FROM ce_participantes
+        WHERE ce_establecimiento_id_ce_establecimiento = '$id_establecimiento' AND     
+        ce_estado_encuesta = 0 
+        ");
+
+        $query->execute([]);
+
+        return $query;
+    } catch (Exception $e) {
+        echo 'Excepción Capturada: ' . $e->getMessage();
+    }
+}
+
+function NumeroEstudiantes($id_establecimiento) {
+    try {
+        $con = connectDB_demos();
+        $query = $con->prepare(
+            "SELECT COUNT(id_ce_participantes) AS estudiantes
+            FROM ce_participantes WHERE ce_establecimiento_id_ce_establecimiento = '$id_establecimiento'
+            ");
+
+        $query->execute([]);
+
+        return $query;
+    } catch (Exception $e) {
+        echo 'Excepción Capturada: ' . $e->getMessage();
+    }
+}
 
 function suma_afectivo_punto_corte($puntaje){
     $afectivo_emergente = 0;
@@ -10408,26 +10489,19 @@ function brecha_alta_limitante_estudiante($fc,$ce,$nivel)
 
 }
 
-function tarjeta_de_presentacion($id_estable, $id_curso)
-{
+function tarjeta_de_presentacion($id_estable, $id_curso) {
     try {
-        $contador = 1;
-        $respuestas = respuesta_no_respuesta($id_estable, $id_curso);
-        while ($fila = $respuestas->fetch(PDO::FETCH_ASSOC)) {
-            if ($contador == 1) {
-                $respon = $fila["respondidas"];
-                if ($respon == 0) {
-                    $respon = 1;
-                }
-            } elseif ($contador == 2) {
-                $no_respon = $fila["respondidas"];
-                if ($no_respon == 0) {
-                    $no_respon = 1;
-                }
-                $suma_estudi = $respon + $no_respon;
-                $avance_curso = ($respon * 100) / $suma_estudi;
-            }
-            $contador++;
+        $no_respondidas = NoRespondidasEstDocente($id_estable, $id_curso)->fetch(PDO::FETCH_ASSOC);
+        $respondidas = RespondidasEstDocente($id_estable, $id_curso)->fetch(PDO::FETCH_ASSOC);
+        $suma_estudi = $no_respondidas["no_respondidas"] + $respondidas["respondidas"];
+
+        $respon = $respondidas["respondidas"];
+        $no_respon = $no_respondidas["no_respondidas"];
+
+        if($suma_estudi != 0) {
+            $avance_curso = ($respon * 100) / $suma_estudi;
+        } else {
+            $avance_curso = 0;
         }
 
         echo "<div class='col-lg-4 col-xs-6'><div class='small-box bg-aqua'>"
@@ -10476,26 +10550,19 @@ function tarjeta_de_presentacion($id_estable, $id_curso)
     }
 }
 
-function tarjeta_de_presentacion_establecimiento($id_estable)
-{
+function tarjeta_de_presentacion_establecimiento($id_estable) {
     try {
-        $contador = 1;
-        $respuestas = respuesta_no_respuesta_establecimiento($id_estable);
-        while ($fila = $respuestas->fetch(PDO::FETCH_ASSOC)) {
-            if ($contador == 1) {
-                $respon = $fila["respondidas"];
-                if ($respon == 0) {
-                    $respon = 1;
-                }
-            } elseif ($contador == 2) {
-                $no_respon = $fila["respondidas"];
-                if ($no_respon == 0) {
-                    $no_respon = 1;
-                }
-                $suma_estudi = $respon + $no_respon;
-                $avance_curso = ($respon * 100) / $suma_estudi;
-            }
-            $contador++;
+        $no_respondidas = NoRespondidasEstablecimiento($id_estable)->fetch(PDO::FETCH_ASSOC);
+        $respondidas = RespondidasEstablecimiento($id_estable)->fetch(PDO::FETCH_ASSOC);
+        $suma_estudi = $no_respondidas["no_respondidas"] + $respondidas["respondidas"];
+
+        $respon = $respondidas["respondidas"];
+        $no_respon = $no_respondidas["no_respondidas"];
+
+        if($suma_estudi != 0) {
+            $avance_curso = ($respon * 100) / $suma_estudi;
+        } else {
+            $avance_curso = 0;
         }
 
         echo "<div class='col-lg-4 col-xs-6'><div class='small-box bg-aqua'>"
@@ -10530,7 +10597,7 @@ function tarjeta_de_presentacion_establecimiento($id_estable)
             . "<div class='small-box bg-red'>"
             . "<div class='inner'>"
             . "<h3>" . round($avance_curso, 1, PHP_ROUND_HALF_UP) . '%' . "</h3>"
-            . "<p><h4>Total establecimiento encuestado</h4></p>"
+            . "<p><h4>De los cursos inscritos</h4></p>"
             . "</div>"
             . "<div class='icon'>"
             . "<i class='fa fa-pie-chart'></i>"
