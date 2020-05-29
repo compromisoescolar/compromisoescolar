@@ -477,7 +477,7 @@
                                     <div class="panel-body">
                                         <div>
                                             <span>
-                                                <p style="font-size: 20px; text-align: center">Reporte Establecimiento Básica<i class="fa fa-question-circle" style="color:#2d6693; font-size: 20px" aria-hidden="true" onclick="definicion_cuadrantes()"></i></p>
+                                                <p style="font-size: 20px; text-align: center">Reporte Establecimiento Básica <i class="fa fa-question-circle" style="color:#2d6693; font-size: 20px" aria-hidden="true" onclick="definicion_cuadrantes()"></i></p>
                                             </span>
                                         </div>
                                         <div id="id_graficos_b">
@@ -798,7 +798,7 @@
         const options = {
             ...defaultOptions,
             title: {
-                text: 'Reporte Establecimiento'
+                text: 'Reporte Establecimiento Media'
             },
 
             series: [{
