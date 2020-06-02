@@ -17,7 +17,7 @@ function select_user($user,$pass,$tipo){
         FROM ce_rol_user a
         INNER JOIN ce_usuarios b ON a.id_usuario_fk = b.id_usu
         INNER JOIN ce_roles c ON a.id_roles_fk = c.id_rol
-        INNER JOIN ce_establecimiento d ON d.id_ce_establecimiento = b.fk_establecimiento
+        LEFT JOIN ce_establecimiento d ON d.id_ce_establecimiento = b.fk_establecimiento
         WHERE b.nombre_usu = '$user' AND c.id_rol = '$tipo'";
         $consulta = $con->query($query)->fetch();
         $con = NULL;
