@@ -168,6 +168,13 @@ else if( $valor == "nuevo_curso"){
      $nivel_curso = filter_var($_POST["niveles_ce"], FILTER_SANITIZE_NUMBER_INT); 
    
      $id_docente = filter_var($_POST["id_curso_docente"], FILTER_SANITIZE_NUMBER_INT);
+
+     if( isset($_POST['id_tipo_encuesta']) && $_POST["niveles_ce"] == "1")
+    {
+        $id_tipo_encuesta = filter_var($_POST["id_tipo_encuesta"], FILTER_SANITIZE_NUMBER_INT);
+    } else {
+        $id_tipo_encuesta = null;
+    } 
  
      $id_establecimiento =    $_SESSION["identificador_estable"];
 
@@ -182,7 +189,7 @@ else if( $valor == "nuevo_curso"){
 
      }else if($valida_docente <= 0){
 
-        $curso =  registro_nuevo_curso($nom_curso, $id_establecimiento, $id_docente, $nivel_curso);    
+        $curso =  registro_nuevo_curso($nom_curso, $id_establecimiento, $id_docente, $nivel_curso, $id_tipo_encuesta);    
     
  
         if($curso == TRUE){
@@ -214,7 +221,14 @@ else if( $valor == "nuevo_curso"){
  
      $id_establecimiento =    $_SESSION["identificador_estable"];
 
-     $curso = update_curso($id_curso, $nom_curso, $id_establecimiento, $id_docente, $nivel_curso);
+     if( isset($_POST['id_tipo_encuesta_update']) && $_POST["niveles_ce_update"] == "1")
+     {
+         $id_tipo_encuesta = filter_var($_POST["id_tipo_encuesta_update"], FILTER_SANITIZE_NUMBER_INT);
+     } else {
+         $id_tipo_encuesta = null;
+     } 
+
+     $curso = update_curso($id_curso, $nom_curso, $id_establecimiento, $id_docente, $nivel_curso, $id_tipo_encuesta);
 
    // $curso =  registro_nuevo_curso( $nom_curso, $especiali_curso, $id_establecimiento, $id_docente, $nivel_curso);
  

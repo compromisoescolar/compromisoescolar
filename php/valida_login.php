@@ -24,6 +24,8 @@ if( $resultado["usuario"] == $usuario && $resultado["contrasena"] == $contrasena
 
     $_SESSION['privilegios']= $privilegios;
 
+    $_SESSION['pais'] = $resultado["pais"];
+
     echo 1;
 }
 else {

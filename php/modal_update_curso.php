@@ -18,7 +18,7 @@ require_once '../conf/funciones_db.php';
           <label>Docente:</label>
             <?php lista_docente_establecimiento_update($_SESSION["identificador_estable"]);?>
               <input type="text" name="id_curso_update" id="id_curso_update" class="invisible"/>
-          </div>
+          </div>          
           <div class="col-md-6">
           <label>Curso:</label>
           <input type="text" name="nombre_curso_update" id="nombre_curso_update" class="form-control"/>
@@ -27,7 +27,13 @@ require_once '../conf/funciones_db.php';
              <label>Nivel Curso:</label>
              <?php niveles_compromiso_escolar_update($_SESSION["identificador_estable"]);?>
           </div>      
-          
+          <?php
+			if($_SESSION["pais"] == 1) {
+				echo '<div class="col-md-6" id="tipo_encuesta_update"><label>Tipo Encuesta:</label>';
+				lista_tipo_encuesta_update(); 			
+				echo '</div>';
+				
+			}?>
          </div>
         </div>       
        
@@ -41,6 +47,22 @@ require_once '../conf/funciones_db.php';
   </div>
 
   <script>
+            $(document).ready(function(){
+
+              $('#niveles_ce_update').on('change', function(){
+                if($('#niveles_ce_update').val() == 2) {
+                  if($('#tipo_encuesta_update').length > 0) {
+                    $('#tipo_encuesta_update').hide();
+                    $('#id_tipo_encuesta_update').val(1);
+                  }
+                } else {
+                  if($('#tipo_encuesta_update').length > 0) {
+                    $('#tipo_encuesta_update').show();
+                  }
+                }
+              });
+            });
+
       $("#actualizando_curso").click(function(){
         var formData = new FormData(document.getElementById("formulario_update_curso"));
                     formData.append("dato", "curso_update");                       

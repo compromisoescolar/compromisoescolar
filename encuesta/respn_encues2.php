@@ -14,6 +14,12 @@
 	    $resultado = $query->fetch(PDO::FETCH_ASSOC);
 		$id_pais = $resultado["id_ce_pais"];
 		$nivel = $_SESSION["nivel_estudiante"];
+
+		$query = $con->query("SELECT cc.ce_fk_tipo_encuesta AS tipo_encuesta FROM ce_curso cc INNER JOIN ce_participantes cp ON
+        cc.id_ce_curso = cp.ce_curso_id_ce_curso WHERE ce_participanes_token ='$usuario'");
+	    $resultado_tipo = $query->fetch(PDO::FETCH_ASSOC);
+		$tipo_encuesta = $resultado_tipo["tipo_encuesta"];
+
 		txt_inicia_encuesta($usuario, $mi_pais);
 ?>
 	
@@ -177,7 +183,7 @@
 							 if($id_pais != 1){
 								 $nivel = 2;
 							 }
-							 $resultado = preguntas_compromiso_escolar_encuesta($nivel, $id_pais);
+							 $resultado = preguntas_compromiso_escolar_encuesta($nivel, $id_pais, $tipo_encuesta);
                                  
 		                        ?>
                             <tr>

@@ -27,7 +27,15 @@ require_once '../conf/funciones_db.php';
 						<div class="col-md-6">
 							<label>Docente Curso:</label>
             <?php lista_docente_establecimiento($_SESSION["identificador_estable"]);?>
-          </div>
+		  </div>
+		  <?php
+			if($_SESSION["pais"] == 1) {
+				echo '<div class="col-md-6" id="tipo_encuesta"><label>Tipo Encuesta:</label>';
+				lista_tipo_encuesta(); 			
+				echo '</div>';
+				
+			}?>
+		  
 					</div>
 			
 			</div>
@@ -44,6 +52,20 @@ require_once '../conf/funciones_db.php';
 
 		$("#nom_requerido").hide();
         $(document).ready(function(){
+
+			$('#niveles_ce').on('change', function(){
+				if($('#niveles_ce').val() == 2) {
+					if($('#tipo_encuesta').length > 0) {
+						$('#tipo_encuesta').hide();
+						$('#id_tipo_encuesta').val(1);
+					}
+				} else {
+					if($('#tipo_encuesta').length > 0) {
+						$('#tipo_encuesta').show();
+					}
+				}
+			});
+
 	   $("#guarda_curso").click(function(){
 		   var curso_nombre = $("#nom_curso").val();
 		   if(curso_nombre === ''){

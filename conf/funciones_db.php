@@ -13,10 +13,11 @@ function mayordearray( $array ){
 function select_user($user,$pass,$tipo){
     try{
         $con = connectDB_demos();
-        $query = "SELECT a.id_roles_fk AS tipo, b.nombre_usu as usuario, b.contrasena_usu as contrasena, c.nombre_rol as rol, b.fk_establecimiento as id_estable
+        $query = "SELECT a.id_roles_fk AS tipo, b.nombre_usu as usuario, b.contrasena_usu as contrasena, c.nombre_rol as rol, b.fk_establecimiento as id_estable, d.id_pais as pais
         FROM ce_rol_user a
         INNER JOIN ce_usuarios b ON a.id_usuario_fk = b.id_usu
         INNER JOIN ce_roles c ON a.id_roles_fk = c.id_rol
+        INNER JOIN ce_establecimiento d ON d.id_ce_establecimiento = b.fk_establecimiento
         WHERE b.nombre_usu = '$user' AND c.id_rol = '$tipo'";
         $consulta = $con->query($query)->fetch();
         $con = NULL;
@@ -471,7 +472,7 @@ function niveles_compromiso_escolar_update(){
     }
 }
 
-function registro_nuevo_curso($nom_curso,$id_estable,$id_docente, $id_nivel){
+function registro_nuevo_curso($nom_curso,$id_estable,$id_docente, $id_nivel, $id_tipo_encuesta){
     try{
 
         $con = connectDB_demos();
@@ -480,8 +481,12 @@ function registro_nuevo_curso($nom_curso,$id_estable,$id_docente, $id_nivel){
         $resultado_curso = $pre_curso->fetch(PDO::FETCH_ASSOC);
 
         if( $resultado_curso["curso"] == "indefinido"){
-
-            $query =  $con->query("INSERT INTO ce_curso(ce_curso_nombre,ce_fk_establecimiento,ce_docente_id_ce_docente,ce_fk_nivel) VALUES('$nom_curso','$id_estable','$id_docente','$id_nivel')");       
+            if($id_tipo_encuesta == null) {
+                $query =  $con->query("INSERT INTO ce_curso(ce_curso_nombre,ce_fk_establecimiento,ce_docente_id_ce_docente,ce_fk_nivel) VALUES('$nom_curso','$id_estable','$id_docente','$id_nivel')");
+            }
+            else {
+                $query =  $con->query("INSERT INTO ce_curso(ce_curso_nombre,ce_fk_establecimiento,ce_docente_id_ce_docente,ce_fk_nivel, ce_fk_tipo_encuesta) VALUES('$nom_curso','$id_estable','$id_docente','$id_nivel','$id_tipo_encuesta')");
+            }       
         $selec_id_curso = $con->query("SELECT id_ce_curso FROM ce_curso ORDER BY id_ce_curso DESC LIMIT 1");
         $resultado =  $selec_id_curso->fetch(PDO::FETCH_ASSOC);
         $id_ultimo = $resultado["id_ce_curso"];
@@ -495,7 +500,12 @@ function registro_nuevo_curso($nom_curso,$id_estable,$id_docente, $id_nivel){
            
         }else{
 
-            $query =  $con->query("INSERT INTO ce_curso(ce_curso_nombre,ce_fk_establecimiento,ce_docente_id_ce_docente,ce_fk_nivel) VALUES('$nom_curso','$id_estable','$id_docente','$id_nivel')");       
+            if($id_tipo_encuesta == null) {
+                $query =  $con->query("INSERT INTO ce_curso(ce_curso_nombre,ce_fk_establecimiento,ce_docente_id_ce_docente,ce_fk_nivel) VALUES('$nom_curso','$id_estable','$id_docente','$id_nivel')");
+            }
+            else {
+                $query =  $con->query("INSERT INTO ce_curso(ce_curso_nombre,ce_fk_establecimiento,ce_docente_id_ce_docente,ce_fk_nivel, ce_fk_tipo_encuesta) VALUES('$nom_curso','$id_estable','$id_docente','$id_nivel','$id_tipo_encuesta')");
+            }         
             $selec_id_curso = $con->query("SELECT id_ce_curso FROM ce_curso ORDER BY id_ce_curso DESC LIMIT 1");
             $resultado =  $selec_id_curso->fetch(PDO::FETCH_ASSOC);
             $id_ultimo = $resultado["id_ce_curso"];
@@ -520,7 +530,7 @@ function vista_curso($id_establecimiento){
         $con = connectDB_demos();
 
         $query =  $con->query("SELECT a.id_esta_curs_doc AS id_pivot, b.id_ce_curso AS id_curso,b.ce_curso_nombre AS nombre_curso,d.ce_nombre AS nivel, CONCAT(c.ce_docente_nombres,' ',c.ce_docente_apellidos) AS nom_docente,
-        d.ce_id_niveles AS id_nivel, c.id_ce_docente as id_docente
+        d.ce_id_niveles AS id_nivel, c.id_ce_docente as id_docente, b.ce_fk_tipo_encuesta as tipo_encuesta
         FROM ce_estable_curso_docente a      
         INNER JOIN ce_curso b ON a.ce_fk_curso = b.id_ce_curso
         INNER JOIN ce_docente c ON a.ce_fk_docente = c.id_ce_docente
@@ -535,7 +545,8 @@ function vista_curso($id_establecimiento){
            .'<tr><th>Codigo</th>'           
            .'<th>Nombre Curso</th>'
            .'<th>Nivel Curso</th>'          
-           .'<th>Nombre Docente</th>'                   
+           .'<th>Nombre Docente</th>' 
+           .'<th style="display:none;">tipo_encuesta</th>'                   
            .'<th>Editar</th>'        
            .'</tr></thead><tbody>';
        foreach( $query AS $fila){
@@ -543,7 +554,8 @@ function vista_curso($id_establecimiento){
            .'<td>'.$fila["id_curso"].'</td>' 
            .'<td>'.$fila["nombre_curso"].'</td>' 
            .'<td>'.$fila["nivel"].'</td>'         
-           .'<td>'.$fila["nom_docente"].'</td>'                         
+           .'<td>'.$fila["nom_docente"].'</td>' 
+           .'<td style="display:none;">'.$fila["tipo_encuesta"].'</td>'                      
            .'<td><button id="actualiza_curso" class="btn btn-danger actualiza_curso"  data-toggle="modal" data-target="#modal_actualizar_curso">Editar</button></td></tr>';  
                
        }  
@@ -616,17 +628,28 @@ function segun_tipo_usuario($user_clave, $user_tipo){
         exit("Excepción Captutrada: ".$ex->getMessage());
     }
 }
-function update_curso($id_curso, $curso_nombre, $id_establecimiento, $id_docente, $id_nivel){
+function update_curso($id_curso, $curso_nombre, $id_establecimiento, $id_docente, $id_nivel, $id_tipo_encuesta){
     try{
         $con = connectDB_demos();
-        $query =$con->prepare("UPDATE ce_curso SET  ce_curso_nombre = :ce_curso_nombre, ce_fk_establecimiento = :ce_fk_establecimiento, 
-        ce_docente_id_ce_docente = :ce_docente_id_ce_docente, ce_fk_nivel = :ce_fk_nivel WHERE id_ce_curso = :id_ce_curso");
-        $query->execute(array(":ce_curso_nombre"=>$curso_nombre,      
-        ":ce_fk_establecimiento"=>$id_establecimiento,
-        ":ce_docente_id_ce_docente"=>$id_docente,
-        ":ce_fk_nivel"=> $id_nivel,
-        ":id_ce_curso"=> $id_curso));
-
+        if($id_tipo_encuesta == null) {
+            $query =$con->prepare("UPDATE ce_curso SET  ce_curso_nombre = :ce_curso_nombre, ce_fk_establecimiento = :ce_fk_establecimiento, 
+            ce_docente_id_ce_docente = :ce_docente_id_ce_docente, ce_fk_nivel = :ce_fk_nivel WHERE id_ce_curso = :id_ce_curso");
+            $query->execute(array(":ce_curso_nombre"=>$curso_nombre,      
+            ":ce_fk_establecimiento"=>$id_establecimiento,
+            ":ce_docente_id_ce_docente"=>$id_docente,
+            ":ce_fk_nivel"=> $id_nivel,
+            ":id_ce_curso"=> $id_curso));
+        }
+        else {
+            $query =$con->prepare("UPDATE ce_curso SET  ce_curso_nombre = :ce_curso_nombre, ce_fk_establecimiento = :ce_fk_establecimiento, 
+            ce_docente_id_ce_docente = :ce_docente_id_ce_docente, ce_fk_nivel = :ce_fk_nivel, ce_fk_tipo_encuesta = :ce_fk_tipo_encuesta WHERE id_ce_curso = :id_ce_curso");
+            $query->execute(array(":ce_curso_nombre"=>$curso_nombre,      
+            ":ce_fk_establecimiento"=>$id_establecimiento,
+            ":ce_docente_id_ce_docente"=>$id_docente,
+            ":ce_fk_nivel"=> $id_nivel,
+            ":id_ce_curso"=> $id_curso,
+            "ce_fk_tipo_encuesta"=> $id_tipo_encuesta));
+        }
         $query = $con->prepare("UPDATE ce_estable_curso_docente SET ce_fk_docente = :ce_fk_docente, ce_fk_nivel = :ce_fk_nivel WHERE ce_fk_curso = :ce_fk_curso AND ce_fk_establecimiento = :ce_fk_establecimiento");
         $query->execute(array(":ce_fk_establecimiento" => $id_establecimiento,
     ":ce_fk_docente"=>$id_docente,
@@ -2931,12 +2954,16 @@ function preguntas_compromiso_escolar($nivel = "2" , $pais = "1"){
 
 }
 
-function preguntas_compromiso_escolar_encuesta($nivel, $pais){
+function preguntas_compromiso_escolar_encuesta($nivel, $pais, $tipo_encuesta){
     try{
         $con = connectDB_demos();
-        $query = $con->prepare("SELECT ce_pregunta_nombre FROM ce_preguntas WHERE ce_nivel=:nivel AND ce_pais_id_ce_pais=:pais ORDER BY ce_orden ASC");
-        $query->execute(array(":nivel"=>$nivel, 
-        ":pais"=>$pais
+        if($tipo_encuesta == 2) {
+            $nivel = "2";
+        }
+      
+    $query = $con->prepare("SELECT ce_pregunta_nombre FROM ce_preguntas WHERE ce_nivel=:nivel AND ce_pais_id_ce_pais=:pais ORDER BY ce_orden ASC");
+    $query->execute(array(":nivel"=>$nivel, 
+    ":pais"=>$pais
     ));
     $con = null;
     $contador = 0;
@@ -11009,4 +11036,55 @@ function ce_excepciones($excepcion){
         exit("Excepción Capturada".$ex->getMessage());
     }
 
+}
+
+function lista_tipo_encuesta(){
+    try{
+        $con = connectDB_demos();
+        $query =  $con->query("SELECT id_ce_tipo_encuesta AS id_tipo_encuesta, desc_ce_tipo_encuesta AS desc_tipo_encuesta FROM ce_tipo_encuesta");       
+        $con = NULL;  
+        $resultado = $query->rowCount();
+        if($resultado >= 1){
+            echo '<select name="id_tipo_encuesta" id="id_tipo_encuesta" class="form-control">';      
+            foreach($query as $fila){
+                echo '<option value="'.$fila["id_tipo_encuesta"].'">'.$fila["desc_tipo_encuesta"].'</option>';
+            }   
+            
+            echo "</select>"; 
+        }else{
+            echo "<div class='text-danger'>No hay tipo encuesta registrados</div>";
+
+        }
+      
+
+
+    }catch(Exception $ex){
+        exit("Excepción Captutrada: ".$ex->getMessage());
+    }
+}
+
+
+function lista_tipo_encuesta_update(){
+    try{
+        $con = connectDB_demos();
+        $query =  $con->query("SELECT id_ce_tipo_encuesta AS id_tipo_encuesta, desc_ce_tipo_encuesta AS desc_tipo_encuesta FROM ce_tipo_encuesta");       
+        $con = NULL;  
+        $resultado = $query->rowCount();
+        if($resultado >= 1){
+            echo '<select name="id_tipo_encuesta_update" id="id_tipo_encuesta_update" class="form-control">';      
+            foreach($query as $fila){
+                echo '<option value="'.$fila["id_tipo_encuesta"].'">'.$fila["desc_tipo_encuesta"].'</option>';
+            }   
+            
+            echo "</select>"; 
+        }else{
+            echo "<div class='text-danger'>No hay tipo encuesta registrados</div>";
+
+        }
+      
+
+
+    }catch(Exception $ex){
+        exit("Excepción Captutrada: ".$ex->getMessage());
+    }
 }

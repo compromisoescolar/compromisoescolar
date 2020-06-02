@@ -1343,11 +1343,11 @@ window.onhashchange=function(){window.location.hash="no-back-button";}
                             $("#tabla_cur").load("php/tabla_curso.php");                  
                       
                    var respuesta = (JSON.parse(response));
-                   if(respuesta.estado === "1"){
+                   if(respuesta.estado == "1"){
                     alertify.success("<div class='text-white text-center'>Datos guardados exitosamente</>");     
                    
                    }
-                   else if(respuesta.estado === "0"){
+                   else if(respuesta.estado == "0"){
                   
                     alertify.success("<div class='text-white text-center'>Datos no guardados</>");    
                    
@@ -1376,11 +1376,21 @@ window.onhashchange=function(){window.location.hash="no-back-button";}
                 var curso = $(this).parents("tr").find("td").eq(1).text();
                 var apelli_docente = $(this).parents("tr").find("td").eq(2).text();
                 var docente = $(this).parents("tr").find("td").eq(3).text();
+                var tipo_encuesta = $(this).parents("tr").find("td").eq(4).text();
+
+                if(apelli_docente == 'MEDIO') {
+                    $('#tipo_encuesta_update').hide();
+                } else {                    
+                    $('#tipo_encuesta_update').show();
+                }
 
                 $('#id_curso_update').val(id_curso); 
 
-                $('#nombre_curso_update').val(curso);           
- 
+                $('#nombre_curso_update').val(curso);                     
+                
+                if($('#id_tipo_encuesta_update').length > 0) {
+                    $('#id_tipo_encuesta_update').val(tipo_encuesta); 
+                }
               $('#niveles_ce_update option:contains(' + apelli_docente + ')').prop({selected: true});
            
               $('#id_curso_docente_update option:contains(' + docente + ')').prop({selected: true});               
