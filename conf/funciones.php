@@ -15,6 +15,13 @@ ini_set('session.use_only_cookies', 1);
  // Uses a secure connection (HTTPS) 
  ini_set('session.cookie_secure', 1); 
 
+ session_start();
+    $params = session_get_cookie_params();
+    setcookie("PHPSESSID", session_id(), 0, $params["path"], $params["domain"],
+        true,  // this is the secure flag you need to set. Default is false.
+        true  // this is the httpOnly flag you need to set
+    );
+
 function generarCodigo($longitud) {
     $key = '';
     $pattern = '1234567890abcdefghijklmnopqrstuvwxyz';
