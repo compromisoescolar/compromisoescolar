@@ -1,5 +1,17 @@
 <?php
 
+ini_set('session.cookie_httponly', 1);
+
+// Prevent Session ID from being passed through  URLs
+ini_set('session.use_only_cookies', 1);
+
+ // Uses a secure connection (HTTPS) 
+ ini_set('session.cookie_secure', 1); 
+
+ @ini_set('session.cookie_httponly', true);
+@ini_set('session.cookie_secure', true);
+@ini_set('session.use_only_cookies', true);
+
 function mayordearray( $array ){
 	$a = array_unique( $array );
 	$s = 0;
