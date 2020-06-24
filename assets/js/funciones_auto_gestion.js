@@ -743,11 +743,24 @@ function edita_pregunta(){
 }
 
 //ZONA DE ENCUESTA //////////////////////////////////////
-
+if(typeof(grecaptcha) != "undefined") {
+    grecaptcha.ready(function() {
+        grecaptcha.execute('6Le4kagZAAAAAPrJvezXbADOrTQVxo69xZg1cyK6', {action: 'submit'}).then(function(token) {
+            $('#token').val(token); // here i set value to hidden field
+        });
+    });
+}
 function valida_token_estu(){
     $(document).ready(function(){
         $("#fm_codigo").on("submit", function (e) {
             e.preventDefault();
+            if(typeof(grecaptcha) != "undefined") {
+                grecaptcha.ready(function() {
+                    grecaptcha.execute('6Le4kagZAAAAAPrJvezXbADOrTQVxo69xZg1cyK6', {action: 'submit'}).then(function(token) {
+                        $('#token').val(token); // here i set value to hidden field
+                    });
+                });
+            }
             var f = $(this);
             var formData = new FormData(document.getElementById("fm_codigo"));
             formData.append("dato", "valor");
@@ -805,6 +818,12 @@ function valida_token_estu(){
                     document.getElementById("ingresar").innerHTML = 'INGRESAR';
                     document.getElementById("spinner").innerHTML = '';
                     alertify.error("<div class='text-white text-center'>ERROR DESCONOCIDO</div>");
+                }
+                else if(fila_usuario.Estado === "4"){
+                    document.getElementById("btn_token").disabled =false;
+                    document.getElementById("ingresar").innerHTML = 'INGRESAR';
+                    document.getElementById("spinner").innerHTML = '';
+                    alertify.error("<div class='text-white text-center'>Error, Captcha incorrecto</div>");
                 }
 
                 }

@@ -12,6 +12,7 @@
         <link rel="stylesheet" type="text/css" href="assets/css/estilo_inicio_encuesta.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="assets/js/jquery-1.10.2.js"></script>
+        <script src="https://www.google.com/recaptcha/api.js?render=6Le4kagZAAAAAPrJvezXbADOrTQVxo69xZg1cyK6"></script>
         
         <script type="text/javascript">
             var flag = false;
@@ -219,7 +220,9 @@
 
                         <div class="codigo_txt">
                             <input type="text" name="txt_contrasena" id="txt_contrasena" class="form-control has-warning" placeholder="Tú Código">
-                        </div>    
+                        </div> 
+                        
+                        <input type="hidden" name="token" value="" id="token">   
                         <button style="border-radius: 2px; background-color: #fc455c; font-family: ‘Source Sans Pro’, sans-serif; font-size: 12px; font-weight: 900; min-width:120px; height:30px; width: 100%; margin-top: 15px; border-radius: 5px; color: white; box-shadow: rgba(0, 0, 0, 0.22) 1px 1px 1px 1px; border: 1.5px solid #fc455c;" id="btn_token" type="submit" class="icon-submit btn-limon-validar">
                             <span id="ingresar"> INGRESAR </span>
                             <div id="spinner"></div>

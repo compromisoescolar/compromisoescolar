@@ -5,7 +5,7 @@
     session_start();
 
     if (!isset($_SESSION['user'])) {
-        header("location: login.php");
+        header("location: index2.php");
         exit();
     }
 
@@ -534,7 +534,7 @@
                     <div style="text-align: center; line-height: 7px;">
                         <hr style="background: #fc455c;">
                     </div>
-                    <form id="form_admin">
+                    <form id="form_admin" method="POST">
                         <br>
                         <div style="text-align: center; margin-bottom: 4px;">
                             <i class="fa fa-user" style="color: #fc455c;" aria-hidden="true"></i> &nbsp; Administracion
@@ -551,6 +551,8 @@
                             <input type="password" id="contrasena" name="contrasena" class="form-control"  autocomplete="password" placeholder="contraseña" required />
                            
                         </div>
+                        
+                        <input type="hidden" name="token" value="" id="token">
                         <button style="border-radius: 2px; background-color: #fc455c; font-family: ‘Source Sans Pro’, sans-serif; font-size: 12px; font-weight: 900; min-width:120px; height:30px; width: 100%; margin-top: 15px; border-radius: 5px; color: white; box-shadow: rgba(0, 0, 0, 0.22) 1px 1px 1px 1px; border: 1.5px solid #fc455c;" name="login-button" id="ingresar_admin" type="submit" class="icon-submit btn-limon-validar">
                             <span id="inicia_rep">
                                 Ingresar
@@ -592,7 +594,8 @@
                         cadena = "usuario=" + $('#usuario').val() +
                             "&contrasena=" + $('#contrasena').val() +
                             "&tipo_usuario=" + $('#tipo_usuario').val() +
-                            "&privilegios=" + "1";
+                            "&privilegios=" + "1" + 
+                            "&token=" + $("#token").val();;
                         $.ajax({
                             type: "POST",
                             url: dir,
@@ -625,12 +628,18 @@
                                         url_base.host + "/" + 
                                         "modulos.php"
                                     );
-                                } else {
+                                } else if(r == 0) {
                                     document.getElementById("ingresar_admin").disabled = false;
                                     document.getElementById("spinner").innerHTML = '';
                                     document.getElementById("inicia_rep").innerHTML = 'Ingresar';
                                     alertify.defaults.glossary.title = '<p class="text-center">Notificación<p>';
                                     alertify.alert('Usuario Incorrecto');
+                                } else if (r == -1) {
+                                    document.getElementById("ingresar_admin").disabled = false;
+                                    document.getElementById("spinner").innerHTML = '';
+                                    document.getElementById("inicia_rep").innerHTML = 'Ingresar';
+                                    alertify.defaults.glossary.title = '<p class="text-center">Notificación<p>';
+                                    alertify.alert('Error, captcha inválido');
                                 }
                             }
                         });

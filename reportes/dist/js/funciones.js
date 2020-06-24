@@ -1760,8 +1760,25 @@ function subir_a_cabezera(){
 
 }
 
+if(typeof(grecaptcha) != "undefined") {
+	grecaptcha.ready(function() {
+		grecaptcha.execute('6Le4kagZAAAAAPrJvezXbADOrTQVxo69xZg1cyK6', {action: 'submit'}).then(function(token) {
+			$('#token').val(token); // here i set value to hidden field
+		});
+	});
+}
+
+
 function login_final(){
-  $('#ingresar_rep').on("click", function () {
+  $('#inicia_reporte').submit(function (e) {
+	e.preventDefault();
+	if(typeof(grecaptcha) != "undefined") {
+		grecaptcha.ready(function() {
+			grecaptcha.execute('6Le4kagZAAAAAPrJvezXbADOrTQVxo69xZg1cyK6', {action: 'submit'}).then(function(token) {
+				$('#token').val(token); // here i set value to hidden field
+			});
+		});
+	}
 	const user = document.getElementById("usuario").value;
 	const pass = document.getElementById("contrasena").value;
 	if (user == "") {    
@@ -1776,7 +1793,8 @@ function login_final(){
 	cadena = "usuario=" + $('#usuario').val() +
 						"&contrasena=" + $('#contrasena').val()+
 						"&tipo_usuario=" + $('#tipo_usuario').val()+
-						"&privilegios=" + "0";
+						"&privilegios=" + "0" + 
+						"&token=" + $("#token").val();
 						$.ajax({
 						  type: "POST",
 						  url: "../php/valida_login.php",
@@ -1815,6 +1833,13 @@ function login_final(){
 								  alertify.defaults.glossary.title = '<p class="text-center">Notificación<p>';
 								  alertify.alert('Usuario Incorrecto');
 							  }
+							  else if (r == -1) {
+								document.getElementById("ingresar_rep").disabled = false;
+								document.getElementById("spinner").innerHTML = '';
+								document.getElementById("inicia_rep").innerHTML = 'Ingresar';
+								alertify.defaults.glossary.title = '<p class="text-center">Notificación<p>';
+								alertify.alert('Error, captcha inválido');
+							}
 						  }
 					  });
   

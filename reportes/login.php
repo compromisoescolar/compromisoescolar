@@ -32,7 +32,7 @@
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg"></p>
-    <form>
+    <form method="POST">
     <div class="form-group has-feedback">
         <?php echo tipo_usuario(); ?>
       </div>

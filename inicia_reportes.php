@@ -13,6 +13,8 @@
         <link rel="stylesheet" type="text/css" href="assets/css/estilo_inicio_encuesta.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="assets/js/jquery-1.10.2.js"></script>
+        <script src="https://www.google.com/recaptcha/api.js?render=6Le4kagZAAAAAPrJvezXbADOrTQVxo69xZg1cyK6"></script>
+        
         <script type="text/javascript">
             var flag = false;
             var flag2 = false;
@@ -165,7 +167,7 @@
                     <div style="text-align: center; line-height: 7px;">
                         <hr style="background: #fc455c;">
                     </div>
-                    <form>
+                    <form id="inicia_reporte" method="POST">
                         <br>
                         <div style="text-align: center; margin-bottom: 4px;">
                             <i class="fa fa-user" style="color: #fc455c;" aria-hidden="true"></i> &nbsp; Profesionales de la educacion
@@ -182,6 +184,7 @@
                             <input type="password" id="contrasena" name="contrasena" class="form-control"  autocomplete="password" placeholder="contraseña" required />
                             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                         </div>
+                        <input type="hidden" name="token" value="" id="token">
                         <button style="border-radius: 2px; background-color: #fc455c; font-family: ‘Source Sans Pro’, sans-serif; font-size: 12px; font-weight: 900; min-width:120px; height:30px; width: 100%; margin-top: 15px; border-radius: 5px; color: white; box-shadow: rgba(0, 0, 0, 0.22) 1px 1px 1px 1px; border: 1.5px solid #fc455c;" name="login-button" id="ingresar_rep" type="submit" class="icon-submit btn-limon-validar">
                             <span id="inicia_rep">
                                 Ingresar
