@@ -466,7 +466,7 @@ function grafica_dispersion_estudiante (dato1) {
 		  width: '200px'
 		})
 		.add();
-	  chart.renderer.label('Bajo compromiso escolar y bajo Factores contextuales', 600, 310)
+	  chart.renderer.label('Bajo compromiso escolar y altos Factores contextuales', 600, 310)
 		.attr({
 		  fill: 'rgb(206, 225, 255)',
 		  padding: 1,
@@ -1348,7 +1348,7 @@ function grafica_dispersion_estudi(size, dato1, dato2,token) {
 
     })
     .add();
-    chart.renderer.label('Bajo compromiso escolar y bajo Factores contextuales', size - 230, 310)
+    chart.renderer.label('Bajo compromiso escolar y altos Factores contextuales', size - 230, 310)
     .attr({
       fill: 'rgb(206, 225, 255)',
       padding: 1,
@@ -1502,7 +1502,7 @@ function grafica_dispersion_estudi(size, dato1, dato2,token) {
                 border: '10px'
             })
             .add();
-    chart.renderer.label('Bajo compromiso escolar y bajo Factores contextuales', size - 230, 310)
+    chart.renderer.label('Bajo compromiso escolar y altos Factores contextuales', size - 230, 310)
     .attr({
                 fill: 'rgb(206, 225, 255)',
                 padding: 1,
