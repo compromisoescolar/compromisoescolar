@@ -15,7 +15,7 @@ $id_pais =  $pais_establecimiento ? $pais_establecimiento : 1;
 $id_curso = $id_curso_nivel[0];
 $id_nivel = $id_curso_nivel[1];
 
-$xlsx = new SimpleXLSX($_FILES['file']['name']);
+$xlsx = new SimpleXLSX($_FILES['file']['tmp_name']);
 
 $con = connectDB_demos();
 
