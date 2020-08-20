@@ -16,9 +16,12 @@ if ($file_ext == '.xlsx') {
 
     $contador = 0;
 
-
-    $xlsx = new SimpleXLSX($_FILES['file']['name']);
-
+    try {
+    $xlsx = new SimpleXLSX($_FILES['file']['tmp_name']);
+    }
+    catch(Exception $ex){
+    exit("Excepción Captutrada: ".$ex->getMessage());
+    }
     foreach ($xlsx->rows() as $fila) {
         if ($contador == 0) {
             if ($fila[0] != "Datos Estudiantes") {
