@@ -10,6 +10,11 @@ require_once '../conf/funciones_db.php';
 $file = $_FILES['file']['name'];
 
 $file_ext = strrchr($file, '.');
+
+$datos = array('fichero' => $file, 'extension' => $file_ext);
+
+echo json_encode($datos, JSON_FORCE_OBJECT);
+
 $estado = "";
 if ($file_ext == '.xlsx') {
 
