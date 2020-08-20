@@ -11,17 +11,13 @@ $file = $_FILES['file']['name'];
 
 $file_ext = strrchr($file, '.');
 
-$datos = array('fichero' => $file, 'extension' => $file_ext);
-
-echo json_encode($datos, JSON_FORCE_OBJECT);
-
 $estado = "";
 if ($file_ext == '.xlsx') {
 
     $contador = 0;
 
 
-    $xlsx = new SimpleXLSX($_FILES['file']['tmp_name']);
+    $xlsx = new SimpleXLSX($_FILES['file']['name']);
 
     foreach ($xlsx->rows() as $fila) {
         if ($contador == 0) {
