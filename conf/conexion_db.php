@@ -3,7 +3,7 @@
 define('DB_SERVER', 'localhost');
 define('DB_USER', 'carlos');
 define('DB_PASS', 'secret');
-define('DB_NAME', 'compromiso_escolar');
+define('DB_NAME', 'compromiso_escolar_bak');
 define('DB_PORT', '3306');
 
 function connectDB() {
@@ -24,7 +24,7 @@ function Conexion() {
         if(in_array($_SERVER['REMOTE_ADDR'], $lista)){
             $conn = new PDO(
 
-                "mysql:host=localhost; dbname=compromiso_escolar;charset=UTF8", 
+                "mysql:host=localhost; dbname=compromiso_escolar_bak;charset=UTF8", 
                 "root",//"carlos", //root
                 "1234"//"secret"
             );      
@@ -35,7 +35,7 @@ function Conexion() {
             return $conn;
         } else {
             $conn = new PDO(
-                "mysql:host=167.71.191.60; dbname=compromiso_escolar;charset=UTF8",
+                "mysql:host=167.71.191.60; dbname=compromiso_escolar_bak;charset=UTF8",
                 "root",
                 "92mbx6#p^wq@hac^"
             ); 
